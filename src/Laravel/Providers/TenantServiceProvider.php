@@ -9,7 +9,7 @@ class TenantServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        $this->commands('tenant.generate-config');
+        $this->commands('tenant.migrate');
     }
 
     /**
@@ -27,7 +27,7 @@ class TenantServiceProvider extends ServiceProvider
      */
     protected function registerCommand()
     {
-        $this->app->singleton('tenant.generate-config', function () {
+        $this->app->singleton('tenant.migrate', function () {
             return new TenantMigrateCommand();
         });
     }
