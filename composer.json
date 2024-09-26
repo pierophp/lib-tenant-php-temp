@@ -1,0 +1,10 @@
+{
+    "name": "uello/lib-tenant-php",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Uello\\Tenant\\": "src/"
+        }
+    },
+    "require": {}
+}
