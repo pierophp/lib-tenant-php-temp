@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Console\Commands;
+namespace Uello\Tenant\Laravel\Commands;
 
 use Illuminate\Console\Command;
 use Uello\Tenant\Laravel\Database\ConnectionHelper;
 
-class TenantMigrate extends Command
+class TenantMigrateCommand extends Command
 {
     /**
      * The name and signature of the console command.

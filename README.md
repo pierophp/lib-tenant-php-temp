@@ -3,6 +3,8 @@
 ## Laravel
 
 ### app/Http/Kernel.php 
+
+### app/Http/Kernel.php 
 Add \Uello\Tenant\Laravel\Middleware\TenantMiddleware::class to both "web" and "api" middleware groups.
 
 ```php
@@ -33,5 +35,21 @@ return [
     'default' => env('DB_CONNECTION', 'mysql'),
     'connections' => ConnectionHelper::generateConnections(),
     // ...
+]
+```
+
+## config/app.php
+Add Uello\Tenant\Laravel\Providers\TenantServiceProvider to your app.
+
+```php
+use Illuminate\Support\Facades\Facade;
+use Illuminate\Support\ServiceProvider;
+
+return [
+    'providers' => ServiceProvider::defaultProviders()->merge([
+        // ...
+
+        Uello\Tenant\Laravel\Providers\TenantServiceProvider::class,
+    ])->toArray(),
 ]
 ```
