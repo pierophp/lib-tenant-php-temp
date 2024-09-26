@@ -2,7 +2,7 @@
 
 ## Laravel
 
-## app/Http/Kernel.php 
+### app/Http/Kernel.php 
 Add \Uello\Tenant\Laravel\Middleware\TenantMiddleware::class to both "web" and "api" middleware groups.
 
 ```php
@@ -27,7 +27,7 @@ class Kernel extends HttpKernel
 }
 ```
 
-## config/database.php
+### config/database.php
 
 Add ConnectionHelper::generateConnections() to your database file.
 
