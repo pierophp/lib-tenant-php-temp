@@ -6,5 +6,12 @@
             "Uello\\Tenant\\": "src/"
         }
     },
-    "require": {}
+    "suggest": {
+        "illuminate/console": "Required to use this package with Laravel",
+        "illuminate/database": "Required to use this package with Laravel"
+    },
+    "require-dev": {
+        "illuminate/database": "^10.48",
+        "illuminate/console": "^10.48"
+    }
 }

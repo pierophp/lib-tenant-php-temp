@@ -4,7 +4,7 @@ namespace Uello\Tenant\Laravel\Database;
 
 class ConnectionHelper
 {
-    static function generateConnections()
+    static function getConnections()
     {
         $keys = array_keys($_ENV);
         $dbTenantKeys = \array_filter($keys, fn($key) => str_starts_with($key, 'DB_TENANT_'));
