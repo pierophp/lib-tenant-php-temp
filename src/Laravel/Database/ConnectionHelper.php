@@ -9,6 +9,8 @@ class ConnectionHelper
         $keys = array_keys($_ENV);
         $dbTenantKeys = \array_filter($keys, fn($key) => str_starts_with($key, 'DB_TENANT_'));
         $dbTenantConnectionKeys = \array_filter($dbTenantKeys, fn($key) => str_ends_with($key, '_CONNECTION'));
+
+        $connections = [];
         foreach ($dbTenantConnectionKeys as $key) {
             $tenant = str_replace(['DB_TENANT_', '_CONNECTION'], '', $key);
 
