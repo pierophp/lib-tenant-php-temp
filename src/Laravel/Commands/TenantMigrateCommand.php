@@ -19,11 +19,8 @@ class TenantMigrateCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'It executes the migration for all tenant databases';
 
-    /**
-     * Execute the console command.
-     */
     public function handle()
     {
         $connections = \array_keys(ConnectionHelper::getConnections());

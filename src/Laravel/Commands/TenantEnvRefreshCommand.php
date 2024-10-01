@@ -18,28 +18,16 @@ class TenantEnvRefreshCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Keep listening the .env files and refresh the configuration cache when it changes';
 
-    protected $envFiles = ["/env/.env.tenant"];
+    protected $envFiles = ["/home/piero/uello/pocs/tenant-php-poc/.env"];
 
     protected $interval = 10;
-
-    protected $command = "php artisan config:cache";
-
-    /**
-     * Execute the console command.
-     */
     public function handle()
     {
-        // Command to execute when any file changes
 
-
-        // Polling interval (in seconds)
-
-        // Initialize an associative array to store the last MD5 checksums
         $lastMd5 = [];
 
-        // Populate the $lastMd5 array with the initial checksums
         foreach ($this->envFiles as $file) {
             if (file_exists($file)) {
                 $lastMd5[$file] = md5_file($file);
@@ -48,24 +36,16 @@ class TenantEnvRefreshCommand extends Command
             }
         }
 
-        // Infinite loop to poll files
         while (true) {
             foreach ($this->envFiles as $file) {
                 if (file_exists($file)) {
-                    // Get the current MD5 checksum
                     $currentMd5 = md5_file($file);
 
-                    echo "Current md5: $currentMd5\n";
-                    echo "Last md5: " . $lastMd5[$file] . "\n";
-
-                    // Check if the MD5 has changed
                     if ($lastMd5[$file] !== $currentMd5) {
-                        echo "Change detected in $file. Running $this->command.\n";
+                        echo "Change detected in $file. Running php artisan config:cache.\n";
 
-                        // Run the command
-                        exec($this->command);
+                        $this->call('config:cache');
 
-                        // Update the last known MD5 checksum
                         $lastMd5[$file] = $currentMd5;
                     }
                 } else {
@@ -73,7 +53,6 @@ class TenantEnvRefreshCommand extends Command
                 }
             }
 
-            // Sleep for the defined interval before checking again
             sleep($this->interval);
         }
     }
