@@ -8,9 +8,11 @@
     },
     "suggest": {
         "illuminate/console": "Required to use this package with Laravel",
-        "illuminate/database": "Required to use this package with Laravel"
+        "illuminate/database": "Required to use this package with Laravel",
+        "google/cloud-pubsub": "Required to use this package with PubSub"
     },
     "require-dev": {
+        "google/cloud-pubsub": "^2.6",
         "illuminate/database": "^10.48",
         "illuminate/console": "^10.48"
     }
