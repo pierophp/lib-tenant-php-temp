@@ -12,7 +12,7 @@ class TenantMigrateCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'tenant-migrate:install';
+    protected $signature = 'tenant:migrate-install';
 
     /**
      * The console command description.
@@ -26,7 +26,7 @@ class TenantMigrateCommand extends Command
      */
     public function handle()
     {
-        $connections = array_keys(ConnectionHelper::getConnections());
+        $connections = \array_keys(ConnectionHelper::getConnections());
         foreach ($connections as $connection) {
             $this->call('migrate', [
                 '--database' => $connection,
