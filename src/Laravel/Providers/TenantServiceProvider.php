@@ -11,6 +11,10 @@ class TenantServiceProvider extends ServiceProvider
 {
     public function boot()
     {
+        $this->publishes([
+            __DIR__ . '/../Config/tenant.php' => config_path('tenant.php'),
+        ], 'config');
+
         $this->commands('tenant.migrate');
         $this->commands('tenant.env-generate');
         $this->commands('tenant.env-refresh');

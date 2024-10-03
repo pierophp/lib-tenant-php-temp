@@ -9,8 +9,12 @@ class TenantMiddleware
 {
     public function handle($request, Closure $next)
     {
-        // Assuming you have some way to identify the tenant, e.g., subdomain, request parameter, etc.
         $tenant = $this->getTenantFromRequest($request);
+
+        $isValid = $this->validateTenant($tenant);
+        if (!$isValid) {
+            return $next($request);
+        }
 
         if ($tenant) {
             DB::setDefaultConnection($tenant);
@@ -21,6 +25,31 @@ class TenantMiddleware
 
     private function getTenantFromRequest($request)
     {
-        return $request->header('X-Tenant');
+        if ($request->hasHeader('X-Tenant')) {
+            return $request->header('X-Tenant');
+        }
+
+        $message = $request->has('message') ? $request->input('message') : null;
+        if (!empty($message['attributes']['tenant'])) {
+            return $message['attributes']['tenant'];
+        }
+
+        abort(403, 'Tenant is Required');
+    }
+
+    private function validateTenant($tenant): bool
+    {
+        $tenantConfig = config('tenant.' . $tenant);
+        if ($tenantConfig === null) {
+            abort(403, 'Tenant doesn\'t exist');
+            return false;
+        }
+
+        if ($tenantConfig['active'] === false) {
+            abort(403, 'Tenant is inactive');
+            return false;
+        }
+
+        return true;
     }
 }

@@ -53,3 +53,8 @@ return [
     ])->toArray(),
 ]
 ```
+
+## Publish Vendor Assets
+```bash
+php artisan vendor:publish --provider="Uello\Tenant\Laravel\Providers\TenantServiceProvider"
+```
