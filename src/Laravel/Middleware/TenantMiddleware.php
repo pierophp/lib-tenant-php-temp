@@ -12,6 +12,9 @@ class TenantMiddleware
         $tenant = $this->getTenantFromRequest($request);
 
         $isValid = $this->validateTenant($tenant);
+
+        $request->route()->setParameter('tenant', $tenant);
+
         if (!$isValid) {
             return $next($request);
         }
@@ -29,6 +32,7 @@ class TenantMiddleware
             return $request->header('X-Tenant');
         }
 
+        // PubSub Message
         $message = $request->has('message') ? $request->input('message') : null;
         if (!empty($message['attributes']['tenant'])) {
             return $message['attributes']['tenant'];

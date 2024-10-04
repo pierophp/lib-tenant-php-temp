@@ -4,7 +4,10 @@
     "autoload": {
         "psr-4": {
             "Uello\\Tenant\\": "src/"
-        }
+        },
+        "files": [
+            "src/Laravel/helpers.php"
+        ]
     },
     "suggest": {
         "illuminate/console": "Required to use this package with Laravel",
