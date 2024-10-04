@@ -2,6 +2,9 @@
 
 namespace Uello\Tenant\Helpers;
 
+/**
+ * On Laravel the env just works during the config:cache command
+ */
 class TenantHelper
 {
     static $tenantsCache;
@@ -10,7 +13,7 @@ class TenantHelper
 
     static $prefix = 'TENANT_ACTIVE_';
 
-    static function getTenants()
+    static function getTenantsFromEnv()
     {
         if (self::$tenantsCache) {
             return self::$tenantsCache;
@@ -25,24 +28,35 @@ class TenantHelper
         return self::$tenantsCache;
     }
 
-    static function isActive($tenant): bool
+    static function isActiveFromEnv($tenant): bool
     {
         return $_ENV[TenantHelper::$prefix . strtoupper($tenant)] === 'true';
     }
 
-    static function getActiveTenants()
+    static function getActiveTenantsFromEnv()
     {
         if (self::$tenantsActiveCache) {
             return self::$tenantsActiveCache;
         }
 
-        $tenants = TenantHelper::getTenants();
+        $tenants = TenantHelper::getTenantsFromEnv();
 
         self::$tenantsActiveCache = \array_filter(
             $tenants,
-            fn($key) => TenantHelper::isActive($key)
+            fn($key) => TenantHelper::isActiveFromEnv($key)
         );
 
         return self::$tenantsActiveCache;
+    }
+
+    static function getActiveTenantsFromConfig()
+    {
+
+        $tenants = \array_filter(
+            config('tenant') ?? [],
+            fn($tenant) => $tenant['active']
+        );
+
+        return \array_keys($tenants);
     }
 }

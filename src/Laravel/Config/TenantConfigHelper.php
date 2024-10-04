@@ -26,22 +26,31 @@ class TenantConfigHelper
 
     }
 
+    public static function getEnv(string $key, string $tenant, $default = null)
+    {
+        $globalEnvKey = "TENANT_" . $key . "_GLOBAL";
+        $tenantEnvKey = "TENANT_" . $key . "_" . strtoupper($tenant);
+
+        return $_ENV[$tenantEnvKey] ?? $_ENV[$globalEnvKey] ?? $default;
+    }
+
     public static function generate()
     {
-        $tenants = TenantHelper::getTenants();
+        $tenants = TenantHelper::getTenantsFromEnv();
         $config = [];
         $globalKeys = self::getGlobalConfigs();
 
         foreach ($tenants as $tenant) {
             $config[$tenant] = [
-                'active' => TenantHelper::isActive($tenant),
+                'active' => TenantHelper::isActiveFromEnv($tenant),
             ];
 
             foreach ($globalKeys as $key) {
-                $globalEnvKey = "TENANT_" . $key . "_GLOBAL";
-                $tenantEnvKey = "TENANT_" . $key . "_" . strtoupper($tenant);
+                if (\str_starts_with($key, "DB_")) {
+                    continue;
+                }
 
-                $config[$tenant][\strtolower($key)] = $_ENV[$tenantEnvKey] ?? $_ENV[$globalEnvKey];
+                $config[$tenant][\strtolower($key)] = TenantConfigHelper::getEnv($key, $tenant);
             }
         }
 

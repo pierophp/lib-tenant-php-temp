@@ -3,7 +3,9 @@
 namespace Uello\Tenant\Laravel\Commands;
 
 use Illuminate\Console\Command;
-use Uello\Tenant\Laravel\Database\ConnectionHelper;
+use Log;
+use Uello\Tenant\Helpers\TenantHelper;
+
 
 class TenantMigrateCommand extends Command
 {
@@ -23,8 +25,12 @@ class TenantMigrateCommand extends Command
 
     public function handle()
     {
-        $connections = \array_keys(ConnectionHelper::getConnections());
+        $connections = TenantHelper::getActiveTenantsFromConfig();
+
         foreach ($connections as $connection) {
+            Log::info("Migrating database: $connection");
+
+
             $this->call('migrate', [
                 '--database' => $connection,
                 '--no-interaction' => true,
