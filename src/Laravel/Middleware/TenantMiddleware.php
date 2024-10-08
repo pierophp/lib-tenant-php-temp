@@ -21,7 +21,7 @@ class TenantMiddleware
 
         if ($tenant) {
             DB::setDefaultConnection($tenant);
-            Config::set('filesystems.default', $tenant);
+            config(['filesystems.default' => $tenant]);
         }
 
         return $next($request);
